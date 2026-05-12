@@ -1,5 +1,6 @@
 package egovframework.com.cop.brd.service.impl;
 
+import egovframework.com.cop.brd.entity.Stsfdg;
 import egovframework.com.cop.brd.repository.EgovStsfdgRepository;
 import egovframework.com.cop.brd.service.EgovStsfdgService;
 import egovframework.com.cop.brd.service.StsfdgVO;
@@ -14,11 +15,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("brdEgovStsfdgService")
@@ -43,11 +47,14 @@ public class EgovStsfdgServiceImpl extends EgovAbstractServiceImpl implements Eg
         List<StsfdgVO> cntList = egovStsfdgRepository.findAllByBbsIdAndNttIdAndUseAt(stsfdgVO.getBbsId(), stsfdgVO.getNttId(), "Y").stream().map(EgovBoardUtility::stsfdgEntiyToVO).collect(Collectors.toList());
 
         // 만족도 평균값
-        double cnts = 0;
-        for (StsfdgVO vo : cntList) {
-            cnts += vo.getStsfdg();
+        double stsfdgAverage = 0;
+        if (!cntList.isEmpty()) {
+            double cnts = 0;
+            for (StsfdgVO vo : cntList) {
+                cnts += vo.getStsfdg();
+            }
+            stsfdgAverage = (double) Math.round((cnts / cntList.size()) * 10) / 10;
         }
-        double stsfdgAverage = (double) Math.round((cnts / cntList.size()) * 10) / 10;
 
         log.debug("총점 >> " + stsfdgAverage);
 
@@ -83,11 +90,35 @@ public class EgovStsfdgServiceImpl extends EgovAbstractServiceImpl implements Eg
     }
 
     @Override
-    public int deleteStsfdg(String stsfdgNo) {
+    public int deleteStsfdg(String stsfdgNo, Map<String, String> userInfo) {
         log.debug("삭제할 번호 >> " + stsfdgNo);
-        if (!stsfdgNo.isEmpty()) {
-            egovStsfdgRepository.deleteById(stsfdgNo);
+        if (stsfdgNo == null || stsfdgNo.isEmpty()) {
+            return 0;
         }
+
+        Optional<Stsfdg> optionalStsfdg = egovStsfdgRepository.findById(stsfdgNo);
+        if (!optionalStsfdg.isPresent()) {
+            return 0;
+        }
+
+        Stsfdg stsfdg = optionalStsfdg.get();
+        String uniqId = userInfo != null ? userInfo.get("uniqId") : null;
+        if (ObjectUtils.isEmpty(uniqId)) {
+            throw new IllegalStateException("인증 정보가 없습니다.");
+        }
+
+        String ownerId = stsfdg.getFrstRegisterId();
+        if (ObjectUtils.isEmpty(ownerId)) {
+            ownerId = stsfdg.getWrterId();
+        }
+        if (ObjectUtils.isEmpty(ownerId) || !Objects.equals(uniqId, ownerId)) {
+            throw new IllegalStateException("삭제 권한이 없습니다.");
+        }
+
+        stsfdg.setUseAt("N");
+        stsfdg.setLastUpdusrId(uniqId);
+        stsfdg.setLastUpdusrPnttm(LocalDateTime.now());
+        egovStsfdgRepository.save(stsfdg);
         return 1;
     }
 }

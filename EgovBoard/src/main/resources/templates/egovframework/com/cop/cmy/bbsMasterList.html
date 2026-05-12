@@ -74,6 +74,24 @@
     <div id="pagination-container" class="krds-pagination w-page"></div>
 </div>
 <script th:inline="javascript" defer>
+    function escapeHtml(s) {
+        if (s == null || s === undefined) return '';
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+    function escapeJs(s) {
+        if (s == null || s === undefined) return '';
+        return String(s)
+            .replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
+    }
+
     bbsMasterList();
 
     function bbsMasterSearch() {
@@ -90,9 +108,9 @@
             method: 'POST',
             data: $('#listForm').serialize()
         }).done(function(response) {
-            let bbsMasterList = response.bbsMasterList;
+            let bbsMasterList = response.bbsMasterList || [];
             let pagination = response.pagination;
-            let lineNumber = response.lineNumber;
+            let lineNumber = response.lineNumber || 0;
 
             let html = '';
             if (bbsMasterList.length > 0) {
@@ -101,11 +119,11 @@
                     html += '<tr>';
                     html += '<td class="text-center">' + number + '</td>';
                     html += '<td class="text-center">' +
-                        '<a class="krds-btn text medium" onclick="bbsMasterDetail(\'' + bbsMaster.bbsId + '\',\'' + bbsMaster.blogId + '\')">' +
-                        bbsMaster.bbsNm + '</a></td>';
-                    html += '<td class="text-center">' + bbsMaster.userNm + '</td>';
-                    html += '<td class="text-center">' + bbsMaster.frstRegistPnttm + '</td>';
-                    html += '<td class="text-center">' + bbsMaster.useAt + '</td>';
+                        '<a class="krds-btn text medium" onclick="bbsMasterDetail(\'' + escapeJs(bbsMaster.bbsId) + '\')">' +
+                        escapeHtml(bbsMaster.bbsNm) + '</a></td>';
+                    html += '<td class="text-center">' + escapeHtml(bbsMaster.userNm) + '</td>';
+                    html += '<td class="text-center">' + escapeHtml(bbsMaster.frstRegistPnttm) + '</td>';
+                    html += '<td class="text-center">' + escapeHtml(bbsMaster.useAt) + '</td>';
                     html += '</tr>';
                 });
             } else {

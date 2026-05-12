@@ -12,6 +12,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -92,7 +93,7 @@ public class EgovCommentAPIController {
     }
 
     @PostMapping("/deleteComment")
-    public ResponseEntity<?> deleteComment(@Valid @RequestBody CommentVO commentVO, BindingResult bindingResult) {
+    public ResponseEntity<?> deleteComment(@Valid @RequestBody CommentVO commentVO, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -101,9 +102,23 @@ public class EgovCommentAPIController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        articleCommentService.deleteArticleComment(commentVO);
-
-        return ResponseEntity.ok().body("댓글이 삭제되었습니다.");
+        Map<String, String> userInfo = extracted(request);
+        try {
+            articleCommentService.deleteArticleComment(commentVO, userInfo);
+            return ResponseEntity.ok().body("댓글이 삭제되었습니다.");
+        } catch (IllegalStateException e) {
+            String msg = e.getMessage();
+            if ("인증 정보가 없습니다.".equals(msg)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(msg);
+            }
+            if ("댓글을 찾을 수 없습니다.".equals(msg)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+            }
+            if (msg != null && msg.contains("권한")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(msg);
+            }
+            throw e;
+        }
     }
 
     @PostMapping("/selectStsfdgList")
@@ -158,19 +173,32 @@ public class EgovCommentAPIController {
 
     @Transactional
     @PostMapping("/deleteStsfdg")
-    public ResponseEntity<?> deleteStsfdg(@RequestBody StsfdgVO stsfdgVO, BindingResult bindingResult) {
+    public ResponseEntity<?> deleteStsfdg(@RequestBody StsfdgVO stsfdgVO, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
             return ResponseEntity.badRequest().body(errors);
-        } else {
-            if (!stsfdgVO.getStsfdgNo().isEmpty()) {
-                bbsStsfdgService.deleteStsfdg(stsfdgVO.getStsfdgNo());
-            }
         }
-        return ResponseEntity.ok().body("삭제되었습니다.");
+        String stsfdgNo = stsfdgVO.getStsfdgNo() != null ? stsfdgVO.getStsfdgNo() : "";
+        if (stsfdgNo.isEmpty()) {
+            return ResponseEntity.badRequest().body("stsfdgNo is required");
+        }
+        Map<String, String> userInfo = extracted(request);
+        try {
+            bbsStsfdgService.deleteStsfdg(stsfdgNo, userInfo);
+            return ResponseEntity.ok().body("삭제되었습니다.");
+        } catch (IllegalStateException e) {
+            String msg = e.getMessage();
+            if ("인증 정보가 없습니다.".equals(msg)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(msg);
+            }
+            if (msg != null && msg.contains("권한")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(msg);
+            }
+            throw e;
+        }
     }
 
     private Map<String, String> extracted(HttpServletRequest request) {

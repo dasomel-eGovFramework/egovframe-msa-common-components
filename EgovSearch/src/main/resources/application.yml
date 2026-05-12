@@ -1,12 +1,12 @@
 server:
-    port: 9992 # random port
-    tomcat:
-      connection:
-        timeout: -1
+  port: 9992 # random port
+  tomcat:
+    connection:
+      timeout: -1
 
 spring:
   application:
-        name: EgovSearch
+    name: EgovSearch
   main:
     allow-bean-definition-overriding: true
   config:
@@ -77,6 +77,9 @@ eureka:
 
 management:
   endpoints:
+    jmx:
+      exposure:
+        exclude: "*" # JMX에서 모든 엔드포인트 비활성화
     web:
       exposure:
         include: health, info
