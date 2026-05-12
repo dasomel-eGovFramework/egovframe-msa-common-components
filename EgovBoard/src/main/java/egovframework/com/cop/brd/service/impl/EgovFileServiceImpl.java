@@ -16,6 +16,7 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -104,7 +105,15 @@ public class EgovFileServiceImpl extends EgovAbstractServiceImpl implements Egov
 
     @Override
     public void deleteFileInfs(FileVO fileVO) {
+        if (ObjectUtils.isEmpty(fileVO.getDeleteFileSn()) || ObjectUtils.isEmpty(fileVO.getFileSn())) {
+            return;
+        }
+
         for (String num : fileVO.getDeleteFileSn()) {
+            // 토큰으로 검증된 단일 fileSn과 일치하는 값만 삭제한다.
+            if (!fileVO.getFileSn().equals(num)) {
+                continue;
+            }
             FileDetailId filedetailId = new FileDetailId();
             filedetailId.setAtchFileId(fileVO.getAtchFileId());
             filedetailId.setFileSn(num);

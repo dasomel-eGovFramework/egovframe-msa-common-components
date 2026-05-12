@@ -10,7 +10,6 @@ import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
-import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
@@ -20,15 +19,15 @@ import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.httpclient5.ApacheHttpClient5TransportBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
 
 /**
  * OpenSearch 클라이언트 설정
  */
-@Component
+@Configuration
 @Slf4j
 public class EgovSearchClient {
 
@@ -46,6 +45,12 @@ public class EgovSearchClient {
 
         @Value("${opensearch.password}")
         private String password;
+
+        @Value("${opensearch.keystore.path:}")
+        private String keystorePath;
+
+        @Value("${opensearch.keystore.password:changeit}")
+        private String keystorePassword;
 
         @Bean
         @Lazy
@@ -82,21 +87,25 @@ public class EgovSearchClient {
                                 new AuthScope(host),
                                 new UsernamePasswordCredentials(username, password.toCharArray()));
 
-                // 4-2. SSLContext 생성 (모든 인증서 신뢰 - 개발 환경용)
-                final SSLContext sslContext = SSLContextBuilder
-                                .create()
-                                .loadTrustMaterial(null, (chains, authType) -> true)
-                                .build();
-                log.info("SSLContext 생성 완료 (모든 인증서 신뢰)");
+                // 4-2. SSLContext 생성 (키스토어 기반 인증서 검증)
+                SSLContextBuilder sslContextBuilder = SSLContextBuilder.create();
+                if (keystorePath != null && !keystorePath.isBlank()) {
+                        sslContextBuilder.loadTrustMaterial(
+                                new java.io.File(keystorePath),
+                                keystorePassword.toCharArray());
+                        log.info("SSLContext 생성 완료 (키스토어: {})", keystorePath);
+                } else {
+                        log.info("SSLContext 생성 완료 (JVM 기본 TrustStore 사용)");
+                }
+                final SSLContext sslContext = sslContextBuilder.build();
 
                 // 4-3. Transport 빌드 (공식 문서 방식)
                 final ApacheHttpClient5TransportBuilder builder = ApacheHttpClient5TransportBuilder.builder(host);
 
                 builder.setHttpClientConfigCallback(httpClientBuilder -> {
-                        // TLS 전략 설정 (호스트 이름 검증 비활성화)
+                        // TLS 전략 설정 (호스트명 검증 활성화)
                         final TlsStrategy tlsStrategy = ClientTlsStrategyBuilder.create()
                                         .setSslContext(sslContext)
-                                        .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                                         .build();
 
                         // 연결 매니저 설정
@@ -112,7 +121,7 @@ public class EgovSearchClient {
 
                 // 4-4. Transport 빌드
                 final OpenSearchTransport transport = builder.setMapper(jacksonJsonpMapper).build();
-                log.info("=== OpenSearch Client Bean 초기화 완료 (HTTPS with SSL bypass) ===");
+                log.info("=== OpenSearch Client Bean 초기화 완료 (HTTPS with TLS verification) ===");
 
                 return new OpenSearchClient(transport);
         }

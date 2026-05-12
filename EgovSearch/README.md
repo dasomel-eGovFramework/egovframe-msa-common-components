@@ -64,6 +64,9 @@ docker-compose up
 
 ### SSL 환경 KeyStore 설정
 
+> **주의**: `opensearch.protocol`이 `https`인 경우 이 절차는 **필수**. KeyStore 경로(`opensearch.keystore.path`)를 설정하지 않으면 JVM 기본 TrustStore를 사용하게 되어, OpenSearch의 자체 서명 인증서를 신뢰하지 못해 **연결 오류가 발생**.
+
+
 - 클라이언트 측, 즉 개발자가 본인 PC의 KeyStore에 SSL인증서를 등록해야 한다.
 - usr/share/opensearch/config 내의 root-ca.pem을 서버로부터 `jdk 내부 lib > security`에 복사한다.
 ![capture03](https://github.com/user-attachments/assets/e01eaae9-7e5b-4a09-8898-541786a564b4)

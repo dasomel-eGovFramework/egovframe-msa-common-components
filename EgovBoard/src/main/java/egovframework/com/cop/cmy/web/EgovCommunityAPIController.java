@@ -63,8 +63,9 @@ public class EgovCommunityAPIController {
     }
 
     @PostMapping(value="/communityDetail")
-    public ResponseEntity<?> communityDetail(@ModelAttribute CommunityVO communityVO) {
-        CommunityDTO result = service.detail(communityVO);
+    public ResponseEntity<?> communityDetail(@ModelAttribute CommunityVO communityVO, HttpServletRequest request) {
+        Map<String, String> userInfo = extracted(request);
+        CommunityDTO result = service.detail(communityVO, userInfo);
 
         Map<String, Object> response = new HashMap<>();
         if (!ObjectUtils.isEmpty(result)) {
