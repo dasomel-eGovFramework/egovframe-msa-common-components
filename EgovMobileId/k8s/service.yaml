@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: egov-mobile-id
+  labels:
+    app.kubernetes.io/name: egov-mobile-id
+    app.kubernetes.io/part-of: egovframe-msa-common
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: egov-mobile-id
+  ports:
+    - name: http
+      port: 9991
+      targetPort: http

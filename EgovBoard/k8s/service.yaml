@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: egov-board
+  labels:
+    app.kubernetes.io/name: egov-board
+    app.kubernetes.io/part-of: egovframe-msa-common
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: egov-board
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
