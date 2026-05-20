@@ -1,0 +1,58 @@
+version: 2
+updates:
+  # Maven modules (multi-module Spring Boot project)
+  - package-ecosystem: "maven"
+    directories:
+      - "/ConfigServer"
+      - "/EgovAuthor"
+      - "/EgovBoard"
+      - "/EgovCmmnCode"
+      - "/EgovLogin"
+      - "/EgovLoginPolicy"
+      - "/EgovMain"
+      - "/EgovMobileId"
+      - "/EgovQuestionnaire"
+      - "/EgovSearch"
+      - "/EgovSearch-Config"
+      - "/EurekaServer"
+      - "/GatewayServer"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 3
+    labels:
+      - "ci"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  - package-ecosystem: "docker"
+    directories:
+      - "/docker-compose"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 3
+    labels:
+      - "docker"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
