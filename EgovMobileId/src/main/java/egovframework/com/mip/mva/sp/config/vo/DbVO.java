@@ -1,7 +1,8 @@
 package egovframework.com.mip.mva.sp.config.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description DB 설정 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -20,6 +21,9 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
+@ToString
 public class DbVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -34,50 +38,5 @@ public class DbVO implements Serializable {
 	private String username;
 	/** 비밀번호 */
 	private String password;
-
-	public String getProvider() {
-		return provider;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
-
-	public String getDriverClassName() {
-		return driverClassName;
-	}
-
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
-	}
 
 }

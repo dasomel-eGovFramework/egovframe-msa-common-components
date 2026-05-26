@@ -1,7 +1,8 @@
 package egovframework.com.mip.mva.sp.config.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description SP 설정 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -20,6 +21,9 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
+@ToString
 public class SpVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,66 +42,5 @@ public class SpVO implements Serializable {
 	private Boolean checkRequiredPrivacy;
 	/** 만료일자 확인 여부 */
 	private Boolean checkVcExpirationDate;
-
-	public String getServerDomain() {
-		return serverDomain;
-	}
-
-	public void setServerDomain(String serverDomain) {
-		this.serverDomain = serverDomain;
-	}
-
-	public String getBiImageUrl() {
-		return biImageUrl;
-	}
-
-	public void setBiImageUrl(String biImageUrl) {
-		this.biImageUrl = biImageUrl;
-	}
-
-	public String getBiImageBase64() {
-		return biImageBase64;
-	}
-
-	public void setBiImageBase64(String biImageBase64) {
-		this.biImageBase64 = biImageBase64;
-	}
-
-	public Boolean getIsCi() {
-		return isCi;
-	}
-
-	public void setIsCi(Boolean isCi) {
-		this.isCi = isCi;
-	}
-
-	public Boolean getIsTelno() {
-		return isTelno;
-	}
-
-	public void setIsTelno(Boolean isTelno) {
-		this.isTelno = isTelno;
-	}
-
-	public Boolean getCheckRequiredPrivacy() {
-		return checkRequiredPrivacy;
-	}
-
-	public void setCheckRequiredPrivacy(Boolean checkRequiredPrivacy) {
-		this.checkRequiredPrivacy = checkRequiredPrivacy;
-	}
-
-	public Boolean getCheckVcExpirationDate() {
-		return checkVcExpirationDate;
-	}
-
-	public void setCheckVcExpirationDate(Boolean checkVcExpirationDate) {
-		this.checkVcExpirationDate = checkVcExpirationDate;
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
-	}
 
 }
