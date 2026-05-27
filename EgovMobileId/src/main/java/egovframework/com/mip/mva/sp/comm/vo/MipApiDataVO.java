@@ -1,5 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +12,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description 검증 API 데이터 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -17,6 +20,8 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class MipApiDataVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,21 +30,5 @@ public class MipApiDataVO implements Serializable {
 	private Boolean result;
 	/** 데이터 */
 	private String data;
-
-	public Boolean getResult() {
-		return result;
-	}
-
-	public void setResult(Boolean result) {
-		this.result = result;
-	}
-
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
 
 }

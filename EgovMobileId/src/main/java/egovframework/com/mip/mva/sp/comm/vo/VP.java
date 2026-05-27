@@ -1,5 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description VP 정보 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -18,6 +21,8 @@ import java.util.List;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class VP implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -40,77 +45,5 @@ public class VP implements Serializable {
 	private String type;
 	/** 암호화된 검증 요청 데이터 */
 	private String data;
-
-	public Integer getEncryptType() {
-		return encryptType;
-	}
-
-	public void setEncryptType(Integer encryptType) {
-		this.encryptType = encryptType;
-	}
-
-	public Integer getKeyType() {
-		return keyType;
-	}
-
-	public void setKeyType(Integer keyType) {
-		this.keyType = keyType;
-	}
-
-	public String getDid() {
-		return did;
-	}
-
-	public void setDid(String did) {
-		this.did = did;
-	}
-
-	public String getNonce() {
-		return nonce;
-	}
-
-	public void setNonce(String nonce) {
-		this.nonce = nonce;
-	}
-
-	public String getZkpNonce() {
-		return zkpNonce;
-	}
-
-	public void setZkpNonce(String zkpNonce) {
-		this.zkpNonce = zkpNonce;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
-	public Integer getPresentType() {
-		return presentType;
-	}
-
-	public void setPresentType(Integer presentType) {
-		this.presentType = presentType;
-	}
-
-	public List<String> getAuthType() {
-		return authType;
-	}
-
-	public void setAuthType(List<String> authType) {
-		this.authType = authType;
-	}
 
 }

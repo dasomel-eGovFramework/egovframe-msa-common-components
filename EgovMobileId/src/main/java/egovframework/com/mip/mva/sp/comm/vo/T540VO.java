@@ -1,5 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +12,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description 푸시 시작용 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -17,6 +20,8 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class T540VO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -36,61 +41,5 @@ public class T540VO implements Serializable {
 
 	/** Base64로 인코딩된 M200 메세지 */
 	private String m200Base64;
-
-	public String getCmd() {
-		return cmd;
-	}
-
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-
-	public String getMode() {
-		return mode;
-	}
-
-	public void setMode(String mode) {
-		this.mode = mode;
-	}
-
-	public String getSvcCode() {
-		return svcCode;
-	}
-
-	public void setSvcCode(String svcCode) {
-		this.svcCode = svcCode;
-	}
-
-	public String getAppCode() {
-		return appCode;
-	}
-
-	public void setAppCode(String appCode) {
-		this.appCode = appCode;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getTelno() {
-		return telno;
-	}
-
-	public void setTelno(String telno) {
-		this.telno = telno;
-	}
-
-	public String getM200Base64() {
-		return m200Base64;
-	}
-
-	public void setM200Base64(String m200Base64) {
-		this.m200Base64 = m200Base64;
-	}
 
 }

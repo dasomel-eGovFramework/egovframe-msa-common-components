@@ -1,6 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
 import egovframework.com.mip.mva.sp.config.ConfigBean;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -11,7 +13,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description Image 요청 메시지 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -19,6 +21,8 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class M320VO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,45 +37,5 @@ public class M320VO implements Serializable {
 	private String request;
 	/** 거래코드 */
 	private String trxcode;
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getCmd() {
-		return cmd;
-	}
-
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-
-	public String getRequest() {
-		return request;
-	}
-
-	public void setRequest(String request) {
-		this.request = request;
-	}
-
-	public String getTrxcode() {
-		return trxcode;
-	}
-
-	public void setTrxcode(String trxcode) {
-		this.trxcode = trxcode;
-	}
 
 }

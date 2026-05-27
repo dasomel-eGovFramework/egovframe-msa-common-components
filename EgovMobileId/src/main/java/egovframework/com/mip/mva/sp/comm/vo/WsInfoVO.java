@@ -1,5 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +12,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description 웹소켓 정보 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -17,6 +20,8 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class WsInfoVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,53 +38,5 @@ public class WsInfoVO implements Serializable {
 	private String result;
 	/** 상태 */
 	private String status;
-
-	public String getConnUrl() {
-		return connUrl;
-	}
-
-	public void setConnUrl(String connUrl) {
-		this.connUrl = connUrl;
-	}
-
-	public Integer getTimeout() {
-		return timeout;
-	}
-
-	public void setTimeout(Integer timeout) {
-		this.timeout = timeout;
-	}
-
-	public String getTrxcode() {
-		return trxcode;
-	}
-
-	public void setTrxcode(String trxcode) {
-		this.trxcode = trxcode;
-	}
-
-	public String getSvcCode() {
-		return svcCode;
-	}
-
-	public void setSvcCode(String svcCode) {
-		this.svcCode = svcCode;
-	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
 }

@@ -1,5 +1,8 @@
 package egovframework.com.mip.mva.sp.comm.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +12,7 @@ import java.io.Serializable;
  * @Author Min Gi Ju
  * @Date 2022. 6. 3.
  * @Description QR-CPM 시작용 VO
- * 
+ *
  * <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
@@ -17,6 +20,8 @@ import java.io.Serializable;
  * 2024. 5. 28.    민기주           최초생성
  * </pre>
  */
+@Getter
+@Setter
 public class T520VO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,29 +33,5 @@ public class T520VO implements Serializable {
 
 	/** Base64로 인코딩된 M120 메세지 */
 	private String m120Base64;
-
-	public String getCmd() {
-		return cmd;
-	}
-
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-
-	public String getSvcCode() {
-		return svcCode;
-	}
-
-	public void setSvcCode(String svcCode) {
-		this.svcCode = svcCode;
-	}
-
-	public String getM120Base64() {
-		return m120Base64;
-	}
-
-	public void setM120Base64(String m120Base64) {
-		this.m120Base64 = m120Base64;
-	}
 
 }
