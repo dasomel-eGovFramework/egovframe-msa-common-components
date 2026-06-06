@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - '5.0.x'
   pull_request:
     branches:
       - main
-      - '5.0.x'
 
 permissions:
   contents: read
@@ -31,7 +29,6 @@ jobs:
           - EgovMobileId
           - EgovQuestionnaire
           - EgovSearch
-          - EgovSearch-Config
       fail-fast: false
 
     steps:
